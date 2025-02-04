@@ -1,12 +1,15 @@
-version: "3.9"
+networks:
+  ngi_web:
 
 services:
   ngi_db:
     container_name: ngi_db
     # Need MariaDB because mysql doesn't play nicely with M1 Macs
-    image: mariadb:10.7.3
+    image: mariadb:latest
     volumes:
       - ./db_data:/var/lib/mysql
+    networks:
+      - ngi_web
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: somewordpress
@@ -23,6 +26,8 @@ services:
       - ./wp-content/plugins/methods/:/var/www/html/wp-content/plugins/methods/
       - ./wp-content/themes/ngisweden/:/var/www/html/wp-content/themes/ngisweden/
       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    networks:
+      - ngi_web
     ports:
       - "8000:80"
     restart: always
