@@ -26,6 +26,7 @@ services:
       - ./wp-content/plugins/methods/:/var/www/html/wp-content/plugins/methods/
       - ./wp-content/themes/ngisweden/:/var/www/html/wp-content/themes/ngisweden/
       - ./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+      - ./htaccess-dev:/var/www/html/.htaccess
     networks:
       - ngi_web
     ports:
