@@ -156,13 +156,13 @@ function ngisweden_pubs_shortcode($atts_raw){
         $authors = array();
         foreach($pub['authors'] as $author){
             // If ALL CAPS then capitilise nicely
-            if(strtoupper($author['given']) == $author['given']){
+            if(isset($author['given']) && strtoupper($author['given']) == $author['given']){
                 $author['given'] = ucwords(strtolower($author['given']));
             }
-            if(strtoupper($author['family']) == $author['family']){
+            if(isset($author['family']) && strtoupper($author['family']) == $author['family']){
                 $author['family'] = ucwords(strtolower($author['family']));
             }
-            $authors[] = '<span class="pub-author" title="'.$author['given'].' '.$author['family'].'">'.$author['initials'].' '.$author['family'].'</span>';
+            $authors[] = '<span class="pub-author" title="'.(isset($author['given']) ? $author['given'] : '').' '.(isset($author['family']) ? $author['family'] : '').'">'.(isset($author['initials']) ? $author['initials'] : '').' '.(isset($author['family']) ? $author['family'] : '').'</span>';
         }
 
         // Make publication ref string
