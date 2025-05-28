@@ -159,6 +159,7 @@ require_once('functions/shortcodes/ngisweden_tabs.php');
 require_once('functions/shortcodes/ngisweden_search.php');
 require_once('functions/shortcodes/homepage_applications.php');
 require_once('functions/shortcodes/ngisweden_publications.php');
+require_once('functions/shortcodes/ngisweden_publications_gh.php');
 require_once('functions/shortcodes/github_badge.php');
 require_once('functions/shortcodes/mailchimp_subscribe.php');
 require_once('functions/shortcodes/ngisweden_site_map.php');
