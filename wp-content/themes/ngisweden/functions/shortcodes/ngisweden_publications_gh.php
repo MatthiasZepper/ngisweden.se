@@ -137,10 +137,10 @@ function ngisweden_pubs_gh_shortcode($atts_raw){
 
         // Add to the visible list
         $pubs_items[] = '
-        <a data-toggle="modal" data-target="#pub_'.$pub['iuid'].'" href="'.$pub['links']['display']['href'].'" target="_blank" class="list-group-item list-group-item-action'.($pub['is_collab'] ? ' list-pub-collab' : '').($pub['is_tech_dev'] ? ' list-pub-techdev' : '').'">
-            '.$pub['title'].'<br>
-            <small class="text-muted"><em>'.$pub['journal']['title'].'</em> ('.explode('-', $pub['published'])[0].')</small>'
-            .($pub['is_collab'] ? '<span class="float-right" style="display:inline-block"><span class="badge badge-primary mt-3">NGI Collaboration</span>' : '').($pub['is_tech_dev'] ? '<span class="badge badge-success mt-3 mx-1">NGI Technology development</span></span>' : '</span>').'
+        <a data-toggle="modal" data-target="#pub_'.(isset($pub['iuid']) ? $pub['iuid'] : '').'" href="'.(isset($pub['links']['display']['href']) ? $pub['links']['display']['href'] : '#').'" target="_blank" class="list-group-item list-group-item-action'.(isset($pub['is_collab']) && $pub['is_collab'] ? ' list-pub-collab' : '').(isset($pub['is_tech_dev']) && $pub['is_tech_dev'] ? ' list-pub-techdev' : '').'">
+            '.(isset($pub['title']) ? $pub['title'] : '').'<br>
+            <small class="text-muted"><em>'.(isset($pub['journal']['title']) ? $pub['journal']['title'] : '').'</em> ('.(isset($pub['published']) ? explode('-', $pub['published'])[0] : '').')</small>'
+            .(isset($pub['is_collab']) && $pub['is_collab'] ? '<span class="float-right" style="display:inline-block"><span class="badge badge-primary mt-3">NGI Collaboration</span>' : '').(isset($pub['is_tech_dev']) && $pub['is_tech_dev'] ? '<span class="badge badge-success mt-3 mx-1">NGI Technology development</span></span>' : '</span>').'
         </a>';
 
         // $pubs_items[] = '<pre>'.print_r($pub, true).'</pre>';
@@ -164,38 +164,38 @@ function ngisweden_pubs_gh_shortcode($atts_raw){
 
         // Make publication ref string
         $pub_ref = '';
-        if($pub['journal']['title']){
+        if(isset($pub['journal']['title']) && $pub['journal']['title']){
             $pub_ref .= '<em>'.$pub['journal']['title'].'</em>, ';
         }
         $pub_ref .= '<small>';
-        if($pub['journal']['volume']){
+        if(isset($pub['journal']['volume']) && $pub['journal']['volume']){
             $pub_ref .= '<strong>'.$pub['journal']['volume'].'</strong> ';
         }
-        if($pub['journal']['issue']){
+        if(isset($pub['journal']['issue']) && $pub['journal']['issue']){
             $pub_ref .= '('.$pub['journal']['issue'].') ';
         }
-        if($pub['journal']['issn']){
+        if(isset($pub['journal']['issn']) && $pub['journal']['issn']){
             $pub_ref .= $pub['journal']['issn'].' ';
         }
-        if($pub['published']){
+        if(isset($pub['published']) && $pub['published']){
             $pub_ref .= '('.explode('-', $pub['published'])[0].')';
         }
         $pub_ref .= '</small>';
 
         // NGI collaboration flag
         $collab_badge = '';
-        if($pub['is_collab']){
+        if(isset($pub['is_collab']) && $pub['is_collab']){
             $collab_badge = '<span class="float-right badge badge-primary" title="A publication where a facility member is in the authors list" data-toggle="tooltip">NGI Collaboration</span>';
         }
 
         // NGI Technology Development flag
-        if($pub['is_tech_dev']){
+        if(isset($pub['is_tech_dev']) && $pub['is_tech_dev']){
             $collab_badge = '<span class="float-right badge badge-success" title="A publication with facility internal technology development" data-toggle="tooltip">NGI Technology development</span>';
         }
 
         // Only show modal body if we have an abstract
         $footer_border = '';
-        if($pub['abstract']){
+        if(isset($pub['abstract']) && $pub['abstract']){
             $abstract = '<div class="modal-body small">'.$pub['abstract'].'</div>';
         } else {
             // Due to a bootstrap bug, we need a modal-body element https://github.com/twbs/bootstrap/issues/28906
@@ -205,11 +205,11 @@ function ngisweden_pubs_gh_shortcode($atts_raw){
             $footer_border = 'border-0';
         }
         $modals .= '
-        <div class="modal ngisweden-publications-modal fade" id="pub_'.$pub['iuid'].'" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal ngisweden-publications-modal fade" id="pub_'.(isset($pub['iuid']) ? $pub['iuid'] : '').'" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">'.$pub['title'].'</h5>
+                <h5 class="modal-title">'.(isset($pub['title']) ? $pub['title'] : '').'</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               </div>
               <div class="modal-sub-header">
@@ -219,9 +219,9 @@ function ngisweden_pubs_gh_shortcode($atts_raw){
               '.$abstract.'
               <div class="modal-footer '.$footer_border.'">
                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                <a href="https://www.ncbi.nlm.nih.gov/pubmed/'.$pub['pmid'].'" target="_blank" class="btn btn-sm btn-info">Pubmed <i class="fas fa-external-link-alt fa-sm ml-2"></i></a>
-                <a href="https://dx.doi.org/'.$pub['doi'].'" target="_blank" class="btn btn-sm btn-primary">DOI <i class="fas fa-external-link-alt fa-sm ml-2"></i></a>
-                <a href="'.$pub['links']['display']['href'].'" target="_blank" class="btn btn-sm btn-success">SciLifeLab Pubs <i class="fas fa-external-link-alt fa-sm ml-2"></i></a>
+                <a href="https://www.ncbi.nlm.nih.gov/pubmed/'.(isset($pub['pmid']) ? $pub['pmid'] : '').'" target="_blank" class="btn btn-sm btn-info">Pubmed <i class="fas fa-external-link-alt fa-sm ml-2"></i></a>
+                <a href="https://dx.doi.org/'.(isset($pub['doi']) ? $pub['doi'] : '').'" target="_blank" class="btn btn-sm btn-primary">DOI <i class="fas fa-external-link-alt fa-sm ml-2"></i></a>
+                <a href="'.(isset($pub['links']['display']['href']) ? $pub['links']['display']['href'] : '#').'" target="_blank" class="btn btn-sm btn-success">SciLifeLab Pubs <i class="fas fa-external-link-alt fa-sm ml-2"></i></a>
               </div>
             </div>
           </div>
